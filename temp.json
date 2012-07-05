@@ -1,0 +1,17 @@
+{ 
+  "wiki-url":"http://simile.mit.edu/shelf/", 
+  "wiki-section":"Simile JFK Timeline", 
+  "dateTimeFormat": "Gregorian",
+  "events": [
+    {
+       "start":"Sat May 20 2012 00:00:00 GMT-0600",
+       "title":"'Bay of Pigs' Invasion",
+       "durationEvent":false
+     }, {
+       "start":"Wed May 01 2012 00:00:00 GMT-0600" ,
+       "end":"Sat Jun 01 2012 00:00:00 GMT-0600" ,
+       "durationEvent":true,
+       "title":"Oswald moves to New Orleans",
+       "description":"Oswald moves to New Orleans, and finds employment at the William B. Riley Coffee Company. ref. Treachery in Dallas, p 320"
+     } ] 
+}

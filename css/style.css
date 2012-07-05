@@ -1,0 +1,143 @@
+body {
+    background: #333;
+    color: #fff;
+    font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+}
+
+#title { 
+	background: #444;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	display: block;
+	margin: auto;
+	font-size: 36px;
+	font-weight: bold;
+	width: 1024px;
+	margin-bottom: 10px;
+	padding: 2px;
+	text-shadow: 1px 1px 1px #000;
+	letter-spacing: 5px;
+	text-align: center;
+}
+
+#holder {
+	background: #444;
+    height: 600px;
+	display: block;
+    margin: auto;
+    -webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+    width: 1024px;
+}
+
+#slider {
+	border: 3px solid #aaa;
+	width: 1021px;
+	height: 150px;
+	margin: auto;
+	margin-top: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#toolboxTitle {
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px;	
+}
+
+#menu {
+	background: #7A2C2C;
+	left: 228px;
+	position: absolute;
+	width: 200px;
+	padding: 5px;
+	text-align: right;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	/*-webkit-box-shadow: 0px 0px 19px rgba(255, 255, 255, 0.75);
+-moz-box-shadow:    0px 0px 19px rgba(255, 255, 255, 0.75);
+box-shadow:         0px 0px 19px rgba(255, 255, 255, 0.75);*/
+}
+
+#menu input[type=text] {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#menu input[type=button] {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6) );
+	background:-moz-linear-gradient( center top, #ffffff 5%, #f6f6f6 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6');
+	background-color:#ffffff;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#666666;
+	font-family:arial;
+	font-size:12px;
+	font-weight:bold;
+	padding:2px 12px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #ffffff;
+	width: 120px;
+	margin-right: 4px;
+}
+
+#menu input[type=button]:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff) );
+	background:-moz-linear-gradient( center top, #f6f6f6 5%, #ffffff 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff');
+	background-color:#f6f6f6;
+}
+
+#menu input[type=button]:active {
+	position:relative;
+	top:1px;
+}
+
+
+.dark-theme { color: #eee; }
+        .dark-theme .timeline-band-0 .timeline-ether-bg { background-color: #333 }
+        .dark-theme .timeline-band-1 .timeline-ether-bg { background-color: #111 }
+        .dark-theme .timeline-band-2 .timeline-ether-bg { background-color: #222 }
+        .dark-theme .timeline-band-3 .timeline-ether-bg { background-color: #444 }
+
+        .dark-theme .t-highlight1 { background-color: #003; }
+        .dark-theme .p-highlight1 { background-color: #300; }
+
+        .dark-theme .timeline-highlight-label-start .label_t-highlight1 { color: #f00; }
+        .dark-theme .timeline-highlight-label-end .label_t-highlight1 { color: #115; }
+
+        .dark-theme .timeline-band-events .important { color: #c00; }
+        .dark-theme .timeline-band-events .small-important { background: #c00; }
+
+        .dark-theme .timeline-date-label-em { color: #fff; }
+        .dark-theme .timeline-ether-lines { border-color: #555; border-style: solid; }
+        .dark-theme .timeline-ether-highlight { background: #555; }
+
+        .dark-theme .timeline-event-tape,
+        .dark-theme .timeline-small-event-tape { background: #f60; }
+        .dark-theme .timeline-ether-weekends { background: #111; }
+        
+ div.ui-datepicker{
+ font-size:12px;
+}
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
