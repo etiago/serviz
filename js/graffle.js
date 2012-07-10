@@ -219,7 +219,7 @@ Raphael.fn.boxWithText = function(x, y, width, height, text) {
 		onend(this);
 	}
 	
-	var text = paper.text(x + width/2,y + height/2, text);
+	var text = paper.text(x + width/2,y + height/2, text).attr({ fill: 'white'});;
 	
 	var newWidth = text.getBBox().width+10;
 	
