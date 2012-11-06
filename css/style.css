@@ -1,6 +1,7 @@
 body {
     
-    background: #ffffff;
+    background: url("../img/bg.jpeg");
+    background-repeat:repeat;
     color: #fff;
     font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
 }
@@ -14,7 +15,7 @@ body {
 	margin: auto;
 	font-size: 36px;
 	font-weight: bold;
-	width: 1024px;
+	width: 50%;
 	margin-bottom: 10px;
 	padding: 2px;
 	text-shadow: 1px 1px 1px #000;
@@ -23,19 +24,19 @@ body {
 }
 
 #holder {
-	background: #444;
-    height: 600px;
+	background: rgba(68,68,68,0.5);
+    height: 400px;
 	display: block;
     margin: auto;
     -webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-    width: 1024px;
+    width: 50%;
 }
 
 #slider {
 	border: 3px solid #aaa;
-	width: 1021px;
+	width: 50%;
 	height: 150px;
 	margin: auto;
 	margin-top: 10px;
@@ -52,9 +53,9 @@ body {
 }
 
 #menu {
-	background: #7A2C2C;
-	left: 228px;
-	position: absolute;
+	background: rgba(122,44,44,0.5);
+	margin-left: -228px;
+	margin-top: -767px;
 	width: 200px;
 	padding: 5px;
 	text-align: right;

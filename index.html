@@ -31,167 +31,18 @@
         
 		<script type="text/javascript">
 			window.onload = function() {
-				loadRaphael();
 				loadTimeline();
 				json = getJSONTimelineData();
 				$("#holder").resizable({ handles: "s" });
 				// $.getJSON('timeline.json', function(data) {
 					// Serviz.fromLogToTimeline(data);
 				// });
+				window.Serviz.load();
 			}
 			
 
-			function initializeDateTimePickers() {
-				// Configure the datepickers
-				$('#datestart').datetimepicker({
-				    onClose: function(dateText, inst) {
-				        var endDateTextBox = $('#dateend');
-				        if (endDateTextBox.val() != '') {
-				            var testStartDate = new Date(dateText);
-				            var testEndDate = new Date(endDateTextBox.val());
-				            if (testStartDate > testEndDate)
-				                endDateTextBox.val(dateText);
-				        }
-				        else {
-				            endDateTextBox.val(dateText);
-				        }
-				    },
-				    onSelect: onDateChanged
-				});
-				$('#dateend').datetimepicker({
-				    onClose: function(dateText, inst) {
-				        var startDateTextBox = $('#datestart');
-				        if (startDateTextBox.val() != '') {
-				            var testStartDate = new Date(startDateTextBox.val());
-				            var testEndDate = new Date(dateText);
-				            if (testStartDate > testEndDate)
-				                startDateTextBox.val(dateText);
-				        }
-				        else {
-				            startDateTextBox.val(dateText);
-				        }
-				    },
-				    onSelect: onDateChanged
-				});
-				
-							// Fix for the datepicker weirdness at the bottom of the page
-				$('#ui-datepicker-div').css('display','none');
+			
 
-			}
-			
-			function initializeQTip() {
-				$('#menu')
-					.removeData('qtip') 
-					.qtip({
-						content: {
-							text: 'Please select a start and end dates', 
-							title: {
-								text: 'Hint',
-								button: true
-							}
-						},
-						position: {
-							my: 'top center', // Use the corner...
-							at: 'bottom center' // ...and opposite corner
-						},
-						show: {
-							event: false, // Don't specify a show event...
-							ready: true // ... but show the tooltip when ready
-						},
-						hide: false, // Don't specify a hide event either!
-						style: {
-							classes: 'ui-tooltip-shadow ui-tooltip-green'
-						}
-					});
-				$('#holder')
-					.removeData('qtip') 
-					.qtip({
-						content: {
-							text: 'Here you can visualize the relationships between services', 
-							title: {
-								text: 'Hint',
-								button: true
-							}
-						},
-						position: {
-							my: 'middle left', // Use the corner...
-							at: 'middle right' // ...and opposite corner
-						},
-						show: {
-							event: false, // Don't specify a show event...
-							ready: true // ... but show the tooltip when ready
-						},
-						hide: false, // Don't specify a hide event either!
-						style: {
-							classes: 'ui-tooltip-shadow ui-tooltip-green'
-						}
-					});
-					
-				$('#holder')
-					.removeData('qtip') 
-					.qtip({
-						content: {
-							text: 'You can go ahead and pick a date range in order to load some data...', 
-							title: {
-								text: 'By the way...',
-								button: true
-							}
-						},
-						position: {
-							my: 'center', // Use the corner...
-							at: 'center' // ...and opposite corner
-						},
-						show: {
-							event: false, // Don't specify a show event...
-							ready: true // ... but show the tooltip when ready
-						},
-						hide: false, // Don't specify a hide event either!
-						style: {
-							classes: 'ui-tooltip-shadow ui-tooltip-blue'
-						}
-					});
-			}
-			
-			$(document).ready(function() {
-				initializeDateTimePickers();
-				initializeQTip();
-            });
-			
-			var staticVisible = false;
-			function toggleStatic() {
-				if (staticVisible) {
-					$.each(staticElements, function(key, el) {
-						el.hide();
-						el.text.hide();
-						staticVisible = false;
-					});
-				} else {
-					$.each(staticElements, function(key, el) {
-						el.show();
-						el.text.show();
-						staticVisible = true;
-					});
-				}
-			}
-			
-			function fullReset() {
-				elements = null;
-				var paperDom = paper.canvas;
-    			paperDom.parentNode.removeChild(paperDom);
-				paper = Raphael("holder", 1024, 768);
-				
-				tl.dispose();
-				loadTimeline();
-				
-				$('#datestart').val("");
-				$('#dateend').val("");
-				
-
-				// if (eventSource._events != null) {
-		    		// eventSource._events._events.removeAll();
-		    	// }
-		    	// eventSource.loadJSON({}, document.location.href);
-			}
 			
 			function loadStaticConfig(id) {
 				staticVisible = true;
@@ -219,123 +70,31 @@
 				});  
 			}
 			
-			function loadLatestStatic() {
-				if (elements == null) {
-					alert("First select a period, then you can load static configurations")
-					return;
-				}
-				var d1 = new Date("January 1, 1970 00:00:00");
-				var d2 = new Date();
-				
-				var url = window.location.origin+"/logdump/logdump?timestart="+d1.getTime()+"&timeend="+d2.getTime()+"&static=true";
-	      
-	      		var latestElement = null;
-	      		var latestTime = 0;
-	      		
-			    $.getJSON(url, function(data) {
-			    	
-			    	jQuery.each(data, function(i, val) {
-						if (i>=latestTime) {
-							latestElement = val;
-							latestTime = i;
-						}
-					});
-					
-					loadStaticConfig(latestElement[0][latestElement[0].length-1]);
-				});  
-				
-				
-			}
 			
 			var decoratorUp;
 			var decoratorDown;
 
-			var selectionEvent;
-			function onDateChanged() {
-				// Housekeeping to make sure the user sets correct dates
-				if (this.id == "datestart") {
-					var start = $(this).datetimepicker('getDate');
-				    $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
-				} else if (this.id == "dateend") {
-					var end = $(this).datetimepicker('getDate');
-				    $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
-				}
-
-	            var dateStart = new Date($("#datestart").val());
-	            var dateEnd = new Date($("#dateend").val());
-	            
-	            // Make sure the dates are valid (i.e. the user didn't mess them manually')
-	            if ( Object.prototype.toString.call(dateStart) === "[object Date]" ) {
-					  if ( isNaN( dateStart.getTime() ) ) {  // d.valueOf() could also work
-					  	return;
-					  }
-				} else {
-					return;
-				}
-				
-				if ( Object.prototype.toString.call(dateEnd) === "[object Date]" ) {
-					  if ( isNaN( dateEnd.getTime() ) ) {  // d.valueOf() could also work
-					  	return;
-					  }
-				} else {
-					return;
-				}
-				
-				// Should not happen, preventing user from doing it
-				if (dateStart > dateEnd) {
-					return;
-				}
-				
-
-				// Create a theme for the highlight
-				var theme = Timeline.ClassicTheme.create();
-	            theme.event.bubble.width = 250;
-	
-				// If both decorators are null, it's the first time, create them
-	            if (decoratorUp == null || decoratorDown == null) {
-		            decoratorUp = new Timeline.SpanHighlightDecorator({
-					                        startDate:  dateStart,
-					                        endDate:    dateEnd,
-					                        color:      "#FFC080", // set color explicitly
-					                        opacity:    50,
-					                        startLabel: "Start",
-					                        endLabel:   "End",
-					                        theme:      theme
-					                   });
-					
-					decoratorDown = jQuery.extend(true, {}, decoratorUp);
-	
-					tl.getBand(0).addDecorator(decoratorUp);
-					tl.getBand(1).addDecorator(decoratorDown);
-				} else {
-					decoratorUp._startDate = dateStart;
-					decoratorUp._endDate = dateEnd;
-					decoratorUp.paint();
-					
-					decoratorDown._startDate = dateStart;
-					decoratorDown._endDate = dateEnd;
-					decoratorDown.paint();
-				}
-				reloadTimeline(dateStart, dateEnd);
-				reloadGraph(dateStart, dateEnd);
-			}
+			//var selectionEvent;
+			
 
         </script>
 </head>
 
 <body >
 <div id="title">Serviz</div>
-<div id="menu">
-	<div id="pickers">
-		<div id="toolboxTitle">Toolbox</div>
-		Start: <input type="text" id="datestart" name="datestart" value="" /><br />
-		End: <input type="text" id="dateend" name="dateend" value="" /><br />
-		<input type="button" id="btnLatestConfig" value="Load Latest Static" onclick="loadLatestStatic()" /><br />
-		<input type="button" id="btnStaticToggle" value="Toggle Static Info" onclick="toggleStatic()" /><br />
-		<input type="button" id="btnReset" value="Full Reset" onclick="fullReset()" />
+
+<div id="holder">
+	<div id="menu">
+		<div id="pickers">
+			<div id="toolboxTitle">Toolbox</div>
+			Start: <input type="text" id="datestart" name="datestart" value="" /><br />
+			End: <input type="text" id="dateend" name="dateend" value="" /><br />
+			<input type="button" id="btnLatestConfig" value="Load Latest Static" /><br />
+			<input type="button" id="btnStaticToggle" value="Toggle Static Info" /><br />
+			<input type="button" id="btnReset" value="Full Reset" onclick="fullReset()" />
+		</div>
 	</div>
 </div>
-<div id="holder"></div>
 <div id="slider" class="dark-theme"></div>
 <noscript>
 This page uses Javascript to show you a Timeline. Please enable Javascript in your browser to see the full page. Thank you.
