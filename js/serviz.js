@@ -175,7 +175,7 @@
 			var paperDom = window.Serviz.Graffle.paper.canvas;
 	    	paperDom.parentNode.removeChild(paperDom);
 			window.Serviz.Graffle.paper = Raphael("holder", 1024, 768);		
-	
+			
 			var posX = 290;
 			var posY = 180;
 			var width = 60;
@@ -353,22 +353,51 @@
 		window.Serviz.QTip.initialize();
 		
 		window.Serviz.status.lastUser = 1;
+		window.Serviz.status.lastVersion = 1;
 		
+		window.Serviz.callbacks.addVersion = function() {
+			if (window.Serviz.status.lastVersion == 10) return;
+			
+			window.Serviz.status.lastVersion++;
+			$("#addVersion").before('<div id="divVersion'+window.Serviz.status.lastVersion+'" class="versionPair" style="display:none;"> <select id="service'+window.Serviz.status.lastVersion+'"><option>Service</option></select> <select id="version'+window.Serviz.status.lastVersion+'"><option>Version (*)</option></select></div>');
+			
+			$("#divVersion"+window.Serviz.status.lastVersion).slideDown();
+			
+			$("#menu").qtip("reposition");
+		};
+		window.Serviz.callbacks.removeVersion = function() {
+			if (window.Serviz.status.lastVersion == 1) return;
+			
+			$("#divVersion"+window.Serviz.status.lastVersion).slideUp(function() {
+				$("#divVersion"+window.Serviz.status.lastVersion).remove();
+				
+				window.Serviz.status.lastVersion--;
+				$("#menu").qtip("reposition");
+			});
+		}
 		
 		window.Serviz.callbacks.addUser = function() {
 			if (window.Serviz.status.lastUser == 10) return;
 			
 			window.Serviz.status.lastUser++;
-			$("#addUser").before('<div id="divUser'+window.Serviz.status.lastUser+'">User #'+window.Serviz.status.lastUser+' <input name="user'+window.Serviz.status.lastUser+'" /><button type="submit"><img src="img/icon-magnifying-glass.png" alt="Search" /></button><br /></div>');
+			$("#addUser").before('<div id="divUser'+window.Serviz.status.lastUser+'" style="display:none;">User #'+window.Serviz.status.lastUser+' <input name="user'+window.Serviz.status.lastUser+'" /><button type="submit"><img src="img/icon-magnifying-glass.png" alt="Search" /></button><br /></div>');
+			
+			$("#divUser"+window.Serviz.status.lastUser).slideDown();
 			$("#menu").qtip("reposition");
 		};
 		window.Serviz.callbacks.removeUser = function() {
 			if (window.Serviz.status.lastUser == 1) return;
 			
-			$("#divUser"+window.Serviz.status.lastUser).remove();
-			window.Serviz.status.lastUser--;
-			$("#menu").qtip("reposition");
+			$("#divUser"+window.Serviz.status.lastUser).slideUp(function() {
+				$("#divUser"+window.Serviz.status.lastUser).remove();	
+				window.Serviz.status.lastUser--;
+				
+				$("#menu").qtip("reposition");
+			});
 		}
+		
+		$("#addVersionBtn").click(window.Serviz.callbacks.addVersion);
+		$("#delVersionBtn").click(window.Serviz.callbacks.removeVersion);
 		
 		$("#addUserBtn").click(window.Serviz.callbacks.addUser);
 		$("#delUserBtn").click(window.Serviz.callbacks.removeUser);

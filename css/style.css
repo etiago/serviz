@@ -159,6 +159,40 @@ box-shadow:         0px 0px 19px rgba(255, 255, 255, 0.75);*/
     margin-top: -21px;
 }
 
+#versions {
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px;	
+	background-color: rgba(222,206,29,0.5);
+	margin-top: 2px;
+	cursor: pointer;
+}
+
+#versions:hover {
+	background-color: rgba(222,206,29,0.8);
+}
+#versionsMenu {
+	background-color: rgba(161,149,19,0.5);
+}
+
+#versionsMenu select {
+	width: 180px;
+}
+
+.versionPair {
+	margin: auto;
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-top: 2px;
+	text-align: center;
+}
+
+#addVersion {
+	padding-right: 10px;
+		
+}
+
 #addUser {
 	
 	padding: 3px;

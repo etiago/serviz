@@ -34,36 +34,6 @@
 					// Serviz.fromLogToTimeline(data);
 				// });
 				window.Serviz.load();
-				
-							
-
-	
-				//var selectionEvent;
-				
-		        // var availableTags = [
-		            // "ActionScript",
-		            // "AppleScript",
-		            // "Asp",
-		            // "BASIC",
-		            // "C",
-		            // "C++",
-		            // "Clojure",
-		            // "COBOL",
-		            // "ColdFusion",
-		            // "Erlang",
-		            // "Fortran",
-		            // "Groovy",
-		            // "Haskell",
-		            // "Java",
-		            // "JavaScript",
-		            // "Lisp",
-		            // "Perl",
-		            // "PHP",
-		            // "Python",
-		            // "Ruby",
-		            // "Scala",
-		            // "Scheme"
-		        // ];
 		        window.Serviz.availableUsernames = [];
 		        
 		        $( "#user1" ).autocomplete({
@@ -131,6 +101,21 @@
 			<div id="divUser1">User #1 <input id="user1" /><button type="submit"><img src="img/icon-magnifying-glass.png" alt="Search" /></button><br /></div>			
 			<div id="addUser"><img id="delUserBtn" src="img/minus.png" height="24px" alt=""/> <img id="addUserBtn" src="img/plus.png" height="24px" alt=""/></div>
 		</div>
+		<div id="versions">Versions <img class="arrowToolbox" src="img/down-arrow.png" /></div>
+		<div id="versionsMenu">
+			<div id="divVersion1" class="versionPair">
+				<select id="service1">
+					<option>Service</option>
+				</select>
+				
+				<select id="version1">
+					<option>Version (*)</option>
+				</select>
+			</div>
+
+			<div id="addVersion"><img id="delVersionBtn" src="img/minus.png" height="24px" alt=""/> <img id="addVersionBtn" src="img/plus.png" height="24px" alt=""/></div>
+		</div>	
+		
 		<div id="settings">Settings <img class="arrowToolbox" src="img/down-arrow.png" /></div>
 	</div>
 </div>
