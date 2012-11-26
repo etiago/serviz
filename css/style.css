@@ -12,10 +12,11 @@ body {
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	display: block;
-	margin: auto;
+	margin-left: -223px;
+	margin-top: -768px;
 	font-size: 36px;
 	font-weight: bold;
-	width: 50%;
+	width: 200px;
 	margin-bottom: 10px;
 	padding: 2px;
 	text-shadow: 1px 1px 1px #000;
@@ -45,23 +46,57 @@ body {
 	border-radius: 10px;
 }
 
-#toolboxTitle {
+#period {
 	font-size: 22px;
 	font-weight: bold;
 	text-align: center;
 	padding: 2px;	
+	background-color: rgba(173,40,40,0.5);
+	cursor:pointer;
+}
+
+#period:hover {
+	background-color: rgba(173,40,40,0.8);
+}
+
+#users {
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px;	
+	background-color: rgba(82,173,40,0.5);
+	margin-top: 2px;
+	cursor: pointer;
+}
+
+#users:hover {
+	background-color: rgba(82,173,40,0.8);
+}
+
+#settings {
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px;	
+	margin-top: 2px;
+	cursor: pointer;
+	background-color: rgba(40,104,173,0.5);
+}
+
+#settings:hover {
+	background-color: rgba(40,104,173,0.8);
 }
 
 #menu {
-	background: rgba(122,44,44,0.5);
+	/*background: rgba(122,44,44,0.5);*/
+	background: rgba(68,68,68,0.5);
 	margin-left: -228px;
-	margin-top: -767px;
 	width: 200px;
 	padding: 5px;
 	text-align: right;
-	-webkit-border-radius: 10px;
+	/*-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 10px;*/
 	/*-webkit-box-shadow: 0px 0px 19px rgba(255, 255, 255, 0.75);
 -moz-box-shadow:    0px 0px 19px rgba(255, 255, 255, 0.75);
 box-shadow:         0px 0px 19px rgba(255, 255, 255, 0.75);*/
@@ -109,7 +144,34 @@ box-shadow:         0px 0px 19px rgba(255, 255, 255, 0.75);*/
 	top:1px;
 }
 
+#periodMenu {
+	display: none;
+	background-color: rgba(122,44,44,0.5);
+}
 
+#usersMenu {
+	display: none; 
+	background-color: rgba(48,112,18,0.5);
+}
+#usersMenu button{
+	border: none;
+    background: none;
+    margin-top: -21px;
+}
+
+#addUser {
+	
+	padding: 3px;
+	font-size: 18px;
+}
+
+
+.arrowToolbox {
+	position: absolute;
+	
+	left: -50px;
+	margin-top: 6px;
+}
 .dark-theme { color: #eee; }
         .dark-theme .timeline-band-0 .timeline-ether-bg { background-color: #333 }
         .dark-theme .timeline-band-1 .timeline-ether-bg { background-color: #111 }

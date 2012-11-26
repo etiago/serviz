@@ -3,99 +3,99 @@
         return;
     }
 
-	window.Serviz = new Object();    
+	window.Serviz = new Object();  
+					  
     window.Serviz.load = function() {
-        
-    window.Serviz.fromLogToTimeline = function(logObj) {
-    	var tlObj = new Object();
-    	tlObj['wiki-url'] = "http://simile.mit.edu/shelf/";
-    	tlObj['wiki-section'] = "Simile JFK Timeline";
-    	tlObj.dateTimeFormat = "Gregorian";
-    	tlObj.events = [];
-    	
-		jQuery.each(logObj, function(i, val) {
-			var eventObj = new Object();
-			
-			eventObj.start = new Date(parseInt(i));
-			eventObj.durationEvent = false;
-			eventObj.title = "Configuration changed";
-			eventObj.description = "<input type=\"button\" value=\"Load Configuration\" onclick=\"loadStaticConfig("+val[0][val[0].length-1]+")\"/>";
-			
-			tlObj.events.push(eventObj);
-		});
-		
-		return tlObj;
-    }
-        
-    window.Serviz.onDateChanged = function() {
-			// Housekeeping to make sure the user sets correct dates
-			if (this.id == "datestart") {
-				var start = $(this).datetimepicker('getDate');
-			    $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
-			} else if (this.id == "dateend") {
-				var end = $(this).datetimepicker('getDate');
-			    $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
-			}
-
-            var dateStart = new Date($("#datestart").val());
-            var dateEnd = new Date($("#dateend").val());
-            
-            // Make sure the dates are valid (i.e. the user didn't mess them manually')
-            if ( Object.prototype.toString.call(dateStart) === "[object Date]" ) {
-				  if ( isNaN( dateStart.getTime() ) ) {  // d.valueOf() could also work
-				  	return;
-				  }
-			} else {
-				return;
-			}
-			
-			if ( Object.prototype.toString.call(dateEnd) === "[object Date]" ) {
-				  if ( isNaN( dateEnd.getTime() ) ) {  // d.valueOf() could also work
-				  	return;
-				  }
-			} else {
-				return;
-			}
-			
-			// Should not happen, preventing user from doing it
-			if (dateStart > dateEnd) {
-				return;
-			}
-			
-
-			// Create a theme for the highlight
-			var theme = Timeline.ClassicTheme.create();
-            theme.event.bubble.width = 250;
-
-			// If both decorators are null, it's the first time, create them
-            if (decoratorUp == null || decoratorDown == null) {
-	            decoratorUp = new Timeline.SpanHighlightDecorator({
-				                        startDate:  dateStart,
-				                        endDate:    dateEnd,
-				                        color:      "#FFC080", // set color explicitly
-				                        opacity:    50,
-				                        startLabel: "Start",
-				                        endLabel:   "End",
-				                        theme:      theme
-				                   });
+	    window.Serviz.fromLogToTimeline = function(logObj) {
+	    	var tlObj = new Object();
+	    	tlObj['wiki-url'] = "http://simile.mit.edu/shelf/";
+	    	tlObj['wiki-section'] = "Simile JFK Timeline";
+	    	tlObj.dateTimeFormat = "Gregorian";
+	    	tlObj.events = [];
+	    	
+			jQuery.each(logObj, function(i, val) {
+				var eventObj = new Object();
 				
-				decoratorDown = jQuery.extend(true, {}, decoratorUp);
-
-				tl.getBand(0).addDecorator(decoratorUp);
-				tl.getBand(1).addDecorator(decoratorDown);
-			} else {
-				decoratorUp._startDate = dateStart;
-				decoratorUp._endDate = dateEnd;
-				decoratorUp.paint();
+				eventObj.start = new Date(parseInt(i));
+				eventObj.durationEvent = false;
+				eventObj.title = "Configuration changed";
+				eventObj.description = "<input type=\"button\" value=\"Load Configuration\" onclick=\"loadStaticConfig("+val[0][val[0].length-1]+")\"/>";
 				
-				decoratorDown._startDate = dateStart;
-				decoratorDown._endDate = dateEnd;
-				decoratorDown.paint();
+				tlObj.events.push(eventObj);
+			});
+			
+			return tlObj;
+	    }
+	        
+	    window.Serviz.onDateChanged = function() {
+				// Housekeeping to make sure the user sets correct dates
+				if (this.id == "datestart") {
+					var start = $(this).datetimepicker('getDate');
+				    $('#dateend').datetimepicker('option', 'minDate', new Date(start.getTime()));
+				} else if (this.id == "dateend") {
+					var end = $(this).datetimepicker('getDate');
+				    $('#datestart').datetimepicker('option', 'maxDate', new Date(end.getTime()) );
+				}
+	
+	            var dateStart = new Date($("#datestart").val());
+	            var dateEnd = new Date($("#dateend").val());
+	            
+	            // Make sure the dates are valid (i.e. the user didn't mess them manually')
+	            if ( Object.prototype.toString.call(dateStart) === "[object Date]" ) {
+					  if ( isNaN( dateStart.getTime() ) ) {  // d.valueOf() could also work
+					  	return;
+					  }
+				} else {
+					return;
+				}
+				
+				if ( Object.prototype.toString.call(dateEnd) === "[object Date]" ) {
+					  if ( isNaN( dateEnd.getTime() ) ) {  // d.valueOf() could also work
+					  	return;
+					  }
+				} else {
+					return;
+				}
+				
+				// Should not happen, preventing user from doing it
+				if (dateStart > dateEnd) {
+					return;
+				}
+				
+	
+				// Create a theme for the highlight
+				var theme = Timeline.ClassicTheme.create();
+	            theme.event.bubble.width = 250;
+	
+				// If both decorators are null, it's the first time, create them
+	            if (window.Serviz.decoratorUp == null || window.Serviz.decoratorDown == null) {
+		            window.Serviz.decoratorUp = new Timeline.SpanHighlightDecorator({
+					                        startDate:  dateStart,
+					                        endDate:    dateEnd,
+					                        color:      "#FFC080", // set color explicitly
+					                        opacity:    50,
+					                        startLabel: "Start",
+					                        endLabel:   "End",
+					                        theme:      theme
+					                   });
+					
+					window.Serviz.decoratorDown = jQuery.extend(true, {}, window.Serviz.decoratorUp);
+	
+					tl.getBand(0).addDecorator(window.Serviz.decoratorUp);
+					tl.getBand(1).addDecorator(window.Serviz.decoratorDown);
+				} else {
+					window.Serviz.decoratorUp._startDate = dateStart;
+					window.Serviz.decoratorUp._endDate = dateEnd;
+					window.Serviz.decoratorUp.paint();
+					
+					window.Serviz.decoratorDown._startDate = dateStart;
+					window.Serviz.decoratorDown._endDate = dateEnd;
+					window.Serviz.decoratorDown.paint();
+				}
+				reloadTimeline(dateStart, dateEnd);
+				window.Serviz.Graffle.reloadGraph(dateStart, dateEnd);
 			}
-			reloadTimeline(dateStart, dateEnd);
-			window.Serviz.Graffle.reloadGraph(dateStart, dateEnd);
-		}
-        window.Serviz.initializeDateTimePickers = function() {
+	    window.Serviz.initializeDateTimePickers = function() {
 			// Configure the datepickers
 			$('#datestart').datetimepicker({
 			    onClose: function(dateText, inst) {
@@ -132,10 +132,12 @@
 			
 						// Fix for the datepicker weirdness at the bottom of the page
 			$('#ui-datepicker-div').css('display','none');
-
+	
 		}
+			
+		window.Serviz.callbacks = new Object();
 		
-		window.Serviz.loadLatestStatic = function() {
+		window.Serviz.callbacks.loadLatestStatic = function() {
 			if (window.Serviz.Graffle.elements == null) {
 				alert("First select a period, then you can load static configurations")
 				return;
@@ -144,10 +146,10 @@
 			var d2 = new Date();
 			
 			var url = window.location.origin+"/logdump/logdump?timestart="+d1.getTime()+"&timeend="+d2.getTime()+"&static=true";
-      
-      		var latestElement = null;
-      		var latestTime = 0;
-      		
+	  
+	  		var latestElement = null;
+	  		var latestTime = 0;
+	  		
 		    $.getJSON(url, function(data) {
 		    	
 		    	jQuery.each(data, function(i, val) {
@@ -168,7 +170,7 @@
 		window.Serviz.Graffle.staticElements = new Object();
 		window.Serviz.Graffle.connections = [];
 		window.Serviz.Graffle.paper = Raphael("holder", 1024, 768);
-		
+			
 		window.Serviz.Graffle.reloadGraph = function (dateStart, dateEnd) {
 			var paperDom = window.Serviz.Graffle.paper.canvas;
 	    	paperDom.parentNode.removeChild(paperDom);
@@ -184,6 +186,10 @@
 				  window.Serviz.Graffle.elements = new Object();
 				  window.Serviz.Graffle.staticElements = new Object();
 				  
+				  window.Serviz.availableUsernames.length = 0;
+				  
+				  window.Serviz.availableUsernames = doc.stats.usernames;
+				  
 				  $.each(doc.data, function(key, pair) {
 					  //var ratio = pair.CNT / doc.stats.totalCalls
 					  //var red = (ratio * 255).toString(16).substr(0,2)
@@ -193,61 +199,63 @@
 					  //alert(pair.CONSUMER+"=>"+pair.SERVICE);
 					  
 					  var consumer;
-					  if (pair.CONSUMER in window.Serviz.Graffle.elements) {
-					  	consumer = window.Serviz.Graffle.elements[pair.CONSUMER];
+					  if (pair.consumer in window.Serviz.Graffle.elements) {
+					  	consumer = window.Serviz.Graffle.elements[pair.consumer];
 					  } else {
-						  consumer = window.Serviz.Graffle.paper.boxWithText(posX, posY, width, height, pair.CONSUMER+"\nInvoked #"+pair.CNT+" times");
+						  consumer = window.Serviz.Graffle.paper.boxWithText(posX, posY, width, height, pair.consumer+"\nInvoked #"+pair.cnt+" times");
 						  //consumer.move(100,100);
 						  consumer.drag(onmove, onstart, onend);
 						  consumer.attr({fill: color, "fill-opacity": 100, "stroke-width": 2, cursor: "move"});
 						  
-						  window.Serviz.Graffle.elements[pair.CONSUMER] = consumer;
+						  window.Serviz.Graffle.elements[pair.consumer] = consumer;
 					  }
 					  
-					  var consMeth = consumer.addMethod(pair.CONSUMER_METHOD);
+					  var consMeth = consumer.addMethod(pair.consumer_method);
 					  
 					  var service;
-					  if (pair.SERVICE in window.Serviz.Graffle.elements) {
-						service = window.Serviz.Graffle.elements[pair.SERVICE];  
+					  if (pair.service in window.Serviz.Graffle.elements) {
+						service = window.Serviz.Graffle.elements[pair.service];  
 					  } else {
-						  service = window.Serviz.Graffle.paper.boxWithText(posX+150, posY, width, height, pair.SERVICE+"\nInvoked #"+pair.CNT+" times");
+						  service = window.Serviz.Graffle.paper.boxWithText(posX+150, posY, width, height, pair.service+"\nInvoked #"+pair.cnt+" times");
 						  //service.move(100,100);
 		
 						  service.drag(onmove, onstart, onend);
 						  service.attr({fill: color, "fill-opacity": 100, "stroke-width": 2, cursor: "move"});
 						  
-						  window.Serviz.Graffle.elements[pair.SERVICE] = service;
+						  window.Serviz.Graffle.elements[pair.service] = service;
 					  }
-					  var servMeth = service.addMethod(pair.SERVICE_METHOD);
+					  var servMeth = service.addMethod(pair.service_method);
 					  
-					  var thickness = pair.CNT/doc.stats.totalCalls * 10;
+					  var thickness = pair.cnt/doc.stats.totalCalls * 10;
 					  window.Serviz.Graffle.connections.push(window.Serviz.Graffle.paper.connection(consMeth, servMeth, "#fff", "#fff|"+thickness));
 				  });
 			});
 		
 			$("#holder").qtip("destroy");
 		}
-
+	
+		window.Serviz.status = new Object();
+		
 		// FIx static elements
-		window.Serviz.staticVisible = false;
-		window.Serviz.toggleStatic = function() {
-			if (window.Serviz.staticVisible) {
+		window.Serviz.status.staticVisible = false;
+		window.Serviz.callbacks.toggleStatic = function() {
+			if (window.Serviz.status.staticVisible) {
 				$.each(window.Serviz.Graffle.staticElements, function(key, el) {
 					el.hide();
 					el.text.hide();
-					window.Serviz.staticVisible = false;
+					window.Serviz.status.staticVisible = false;
 				});
 			} else {
 				$.each(window.Serviz.Graffle.staticElements, function(key, el) {
 					el.show();
 					el.text.show();
-					window.Serviz.staticVisible = true;
+					window.Serviz.status.staticVisible = true;
 				});
 			}
 		}
-		
+			
 		// Fix elements
-		window.Serviz.fullReset = function () {
+		window.Serviz.callbacks.fullReset = function () {
 			window.Serviz.Graffle.elements = null;
 			var paperDom = window.Serviz.Graffle.paper.canvas;
 			paperDom.parentNode.removeChild(paperDom);
@@ -260,9 +268,12 @@
 			$('#dateend').val("");
 		}
 		
+		$("#btnReset").click(window.Serviz.callbacks.fullReset);
+		$("#btnLatestConfig").click(window.Serviz.callbacks.loadLatestStatic);
+		$("#btnStaticToggle").click(window.Serviz.callbacks.toggleStatic);
 		
-		$("#btnLatestConfig").click(window.Serviz.loadLatestStatic);
-		$("#btnStaticToggle").click(window.Serviz.toggleStatic);
+		$("#period").click(function(){$("#periodMenu").slideToggle(function(){$("#menu").qtip('reposition');})});
+		$("#users").click(function(){$("#usersMenu").slideToggle(function(){$("#menu").qtip('reposition');})});
 		
 		window.Serviz.QTip = new Object();
 		window.Serviz.QTip.initialize = function() {
@@ -340,6 +351,27 @@
 		
 		window.Serviz.initializeDateTimePickers();
 		window.Serviz.QTip.initialize();
+		
+		window.Serviz.status.lastUser = 1;
+		
+		
+		window.Serviz.callbacks.addUser = function() {
+			if (window.Serviz.status.lastUser == 10) return;
+			
+			window.Serviz.status.lastUser++;
+			$("#addUser").before('<div id="divUser'+window.Serviz.status.lastUser+'">User #'+window.Serviz.status.lastUser+' <input name="user'+window.Serviz.status.lastUser+'" /><button type="submit"><img src="img/icon-magnifying-glass.png" alt="Search" /></button><br /></div>');
+			$("#menu").qtip("reposition");
+		};
+		window.Serviz.callbacks.removeUser = function() {
+			if (window.Serviz.status.lastUser == 1) return;
+			
+			$("#divUser"+window.Serviz.status.lastUser).remove();
+			window.Serviz.status.lastUser--;
+			$("#menu").qtip("reposition");
+		}
+		
+		$("#addUserBtn").click(window.Serviz.callbacks.addUser);
+		$("#delUserBtn").click(window.Serviz.callbacks.removeUser);
 	}
 
 })();
