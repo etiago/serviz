@@ -6,6 +6,8 @@
 	window.Serviz = new Object();  
 					  
     window.Serviz.load = function() {
+    	window.Serviz.availableServices = new Object();
+    	
 	    window.Serviz.fromLogToTimeline = function(logObj) {
 	    	var tlObj = new Object();
 	    	tlObj['wiki-url'] = "http://simile.mit.edu/shelf/";
@@ -170,7 +172,44 @@
 		window.Serviz.Graffle.staticElements = new Object();
 		window.Serviz.Graffle.connections = [];
 		window.Serviz.Graffle.paper = Raphael("holder", 1024, 768);
+		
+		window.Serviz.populateServiceData = function(service) {
+		  if (!(service.name in window.Serviz.availableServices)) {
+		  	  window.Serviz.availableServices[service.name] = new Object();
+			  window.Serviz.availableServices[service.name].versions = new Object();
+						  
+			  window.Serviz.availableServices[service.name].versions[service.version] = [];
+			  window.Serviz.availableServices[service.name].versions[service.version].push(service.method);
+		  } else {
+			  if (window.Serviz.availableServices[service.name].versions[service.version] == null) {
+			  	window.Serviz.availableServices[service.name].versions[service.version] = [];
+			  }
+						  
+			  window.Serviz.availableServices[service.name].versions[service.version].push(service.method);
+		  }
+		};
+		
+		window.Serviz.ui = new Object();
+		window.Serviz.ui.refreshServiceDropdowns = function() {
+			for(var i=1; i<=window.Serviz.status.lastVersion; i++) {
+				$('#service'+i+' option:gt(0)').remove();
+				$('#version'+i+' option:gt(0)').remove();
+				
+				$.each(window.Serviz.availableServices,function(key,value) {
+					$("#service"+i).append($("<option></option>").attr("value", key).text(key));	
+				});
+			 }
 			
+		};
+		
+		window.Serviz.ui.addVersionToDropdown = function(versionDropdown, serviceDropdown) {
+			// versionDropdown.empty();
+// 			
+			// $.each(window.Serviz.availableServices[serviceDropdown.val()].versions, function(key,value) {
+				// versionDropdown.append($("<option></option>").attr("value", key).text(key));	
+			// });
+		}
+		
 		window.Serviz.Graffle.reloadGraph = function (dateStart, dateEnd) {
 			var paperDom = window.Serviz.Graffle.paper.canvas;
 	    	paperDom.parentNode.removeChild(paperDom);
@@ -182,21 +221,22 @@
 			var height = 40;
 			var url = window.location.origin+'/logdump/logdump?timestart='+dateStart.getTime()+'&timeend='+dateEnd.getTime();
 			
+			
 			$.getJSON(url, function(doc) {
 				  window.Serviz.Graffle.elements = new Object();
 				  window.Serviz.Graffle.staticElements = new Object();
 				  
 				  window.Serviz.availableUsernames.length = 0;
 				  
-				  window.Serviz.availableUsernames = doc.stats.usernames;
-				  
 				  $.each(doc.data, function(key, pair) {
-					  //var ratio = pair.CNT / doc.stats.totalCalls
-					  //var red = (ratio * 255).toString(16).substr(0,2)
-					  //var green = ((1-ratio) * 255).toString(16).substr(0,2)
 					  var color = Raphael.getRGB("#098009");
 					  
-					  //alert(pair.CONSUMER+"=>"+pair.SERVICE);
+					  // Store it for later
+					  window.Serviz.populateServiceData({name:pair.consumer,method:pair.consumer_method,version:pair.consumer_version});
+					  window.Serviz.populateServiceData({name:pair.service,method:pair.service_method,version:pair.service_version});					  
+					  
+					  window.Serviz.ui.refreshServiceDropdowns();
+					  
 					  
 					  var consumer;
 					  if (pair.consumer in window.Serviz.Graffle.elements) {
