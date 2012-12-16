@@ -35,7 +35,7 @@ body {
     width: 50%;
 }
 
-#slider {
+/*#slider {
 	border: 3px solid #aaa;
 	width: 50%;
 	height: 150px;
@@ -44,8 +44,13 @@ body {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-}
+}*/
 
+#slider {
+	margin-top: 150px;
+	background-color: #FFFFFF;
+	font-size: 10px;
+}
 #period {
 	font-size: 22px;
 	font-weight: bold;

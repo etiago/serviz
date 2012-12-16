@@ -7,27 +7,27 @@
 					  
     window.Serviz.load = function() {
     	window.Serviz.availableServices = new Object();
-    	
-	    window.Serviz.fromLogToTimeline = function(logObj) {
-	    	var tlObj = new Object();
-	    	tlObj['wiki-url'] = "http://simile.mit.edu/shelf/";
-	    	tlObj['wiki-section'] = "Simile JFK Timeline";
-	    	tlObj.dateTimeFormat = "Gregorian";
-	    	tlObj.events = [];
-	    	
-			jQuery.each(logObj, function(i, val) {
-				var eventObj = new Object();
-				
-				eventObj.start = new Date(parseInt(i));
-				eventObj.durationEvent = false;
-				eventObj.title = "Configuration changed";
-				eventObj.description = "<input type=\"button\" value=\"Load Configuration\" onclick=\"loadStaticConfig("+val[0][val[0].length-1]+")\"/>";
-				
-				tlObj.events.push(eventObj);
-			});
-			
-			return tlObj;
-	    }
+    	window.Serviz.availableUsernames = [];
+	    // window.Serviz.fromLogToTimeline = function(logObj) {
+	    	// var tlObj = new Object();
+	    	// tlObj['wiki-url'] = "http://simile.mit.edu/shelf/";
+	    	// tlObj['wiki-section'] = "Simile JFK Timeline";
+	    	// tlObj.dateTimeFormat = "Gregorian";
+	    	// tlObj.events = [];
+// 	    	
+			// jQuery.each(logObj, function(i, val) {
+				// var eventObj = new Object();
+// 				
+				// eventObj.start = new Date(parseInt(i));
+				// eventObj.durationEvent = false;
+				// eventObj.title = "Configuration changed";
+				// eventObj.description = "<input type=\"button\" value=\"Load Configuration\" onclick=\"loadStaticConfig("+val[0][val[0].length-1]+")\"/>";
+// 				
+				// tlObj.events.push(eventObj);
+			// });
+// 			
+			// return tlObj;
+	    // }
 	        
 	    window.Serviz.onDateChanged = function() {
 				// Housekeeping to make sure the user sets correct dates
@@ -65,36 +65,36 @@
 				}
 				
 	
-				// Create a theme for the highlight
-				var theme = Timeline.ClassicTheme.create();
-	            theme.event.bubble.width = 250;
-	
-				// If both decorators are null, it's the first time, create them
-	            if (window.Serviz.decoratorUp == null || window.Serviz.decoratorDown == null) {
-		            window.Serviz.decoratorUp = new Timeline.SpanHighlightDecorator({
-					                        startDate:  dateStart,
-					                        endDate:    dateEnd,
-					                        color:      "#FFC080", // set color explicitly
-					                        opacity:    50,
-					                        startLabel: "Start",
-					                        endLabel:   "End",
-					                        theme:      theme
-					                   });
-					
-					window.Serviz.decoratorDown = jQuery.extend(true, {}, window.Serviz.decoratorUp);
-	
-					tl.getBand(0).addDecorator(window.Serviz.decoratorUp);
-					tl.getBand(1).addDecorator(window.Serviz.decoratorDown);
-				} else {
-					window.Serviz.decoratorUp._startDate = dateStart;
-					window.Serviz.decoratorUp._endDate = dateEnd;
-					window.Serviz.decoratorUp.paint();
-					
-					window.Serviz.decoratorDown._startDate = dateStart;
-					window.Serviz.decoratorDown._endDate = dateEnd;
-					window.Serviz.decoratorDown.paint();
-				}
-				reloadTimeline(dateStart, dateEnd);
+				// // Create a theme for the highlight
+				// var theme = Timeline.ClassicTheme.create();
+	            // theme.event.bubble.width = 250;
+// 	
+				// // If both decorators are null, it's the first time, create them
+	            // if (window.Serviz.decoratorUp == null || window.Serviz.decoratorDown == null) {
+		            // window.Serviz.decoratorUp = new Timeline.SpanHighlightDecorator({
+					                        // startDate:  dateStart,
+					                        // endDate:    dateEnd,
+					                        // color:      "#FFC080", // set color explicitly
+					                        // opacity:    50,
+					                        // startLabel: "Start",
+					                        // endLabel:   "End",
+					                        // theme:      theme
+					                   // });
+// 					
+					// window.Serviz.decoratorDown = jQuery.extend(true, {}, window.Serviz.decoratorUp);
+// 	
+					// tl.getBand(0).addDecorator(window.Serviz.decoratorUp);
+					// tl.getBand(1).addDecorator(window.Serviz.decoratorDown);
+				// } else {
+					// window.Serviz.decoratorUp._startDate = dateStart;
+					// window.Serviz.decoratorUp._endDate = dateEnd;
+					// window.Serviz.decoratorUp.paint();
+// 					
+					// window.Serviz.decoratorDown._startDate = dateStart;
+					// window.Serviz.decoratorDown._endDate = dateEnd;
+					// window.Serviz.decoratorDown.paint();
+				// }
+				// reloadTimeline(dateStart, dateEnd);
 				window.Serviz.Graffle.reloadGraph(dateStart, dateEnd);
 			}
 	    window.Serviz.initializeDateTimePickers = function() {
@@ -166,7 +166,14 @@
 			
 			
 		}
-		
+		Raphael.st.nodes = function() {
+		  var elements = [];
+		  this.forEach( function(i) {
+		  	i.node.parentBlock = i;
+		    elements.push(i.node);
+		  });
+		  return elements;
+		}
 		window.Serviz.Graffle = new Object();
 		window.Serviz.Graffle.elements = new Object();
 		window.Serviz.Graffle.staticElements = new Object();
@@ -192,15 +199,26 @@
 		window.Serviz.ui = new Object();
 		window.Serviz.ui.refreshServiceDropdowns = function() {
 			for(var i=1; i<=window.Serviz.status.lastVersion; i++) {
+				var serviceOption = $('#service'+i).val();
+				var versionOption = $('#version'+i).val();
+				 
 				$('#service'+i+' option:gt(0)').remove();
 				$('#version'+i+' option:gt(0)').remove();
 				
 				$.each(window.Serviz.availableServices,function(key,value) {
 					$("#service"+i).append($("<option></option>").attr("value", key).text(key));	
 				});
+				
+				$('#service'+i).val(serviceOption);
+				$('#version'+i).val(versionOption);
 			 }
 			
 		};
+		
+		
+			
+			
+		
 		
 		window.Serviz.ui.addVersionToDropdown = function(versionDropdown, serviceDropdown) {
 			// versionDropdown.empty();
@@ -221,6 +239,39 @@
 			var height = 40;
 			var url = window.location.origin+'/logdump/logdump?timestart='+dateStart.getTime()+'&timeend='+dateEnd.getTime();
 			
+			for(var i=1; i <= window.Serviz.status.lastUser; i++) {
+				var added = false;
+				
+				if (!$("#user"+i).is(':empty')) {
+					if (added)
+						url += ",";
+					else
+						url += "&usernames="
+					
+					added = true;
+					
+					url += $("#user"+i).val();
+				}
+			}
+			
+			for(var i=1; i <= window.Serviz.status.lastVersion; i++) {
+				var added = false;
+				
+				if ($("#service"+i).prop("selectedIndex") != 0) {
+					if (added)
+						url += ",";
+					else
+						url += "&services="
+					
+					added = true;
+					
+					url += $("#service"+i).val();
+					
+					if ($("#version"+i).prop("selectedIndex") != 0) {
+						url += "@"+$("#version"+i).val();
+					}
+				}
+			}
 			
 			$.getJSON(url, function(doc) {
 				  window.Serviz.Graffle.elements = new Object();
@@ -237,7 +288,23 @@
 					  
 					  window.Serviz.ui.refreshServiceDropdowns();
 					  
+					  window.Serviz.availableUsernames = doc.stats.usernames;
 					  
+					  $( "#user1" ).autocomplete({
+				            source: function(req, responseFn) {
+						        var re = $.ui.autocomplete.escapeRegex(req.term);
+								var matcher = new RegExp( re, "i" );
+						        var a = $.grep( window.Serviz.availableUsernames, function(item,index){
+						            return matcher.test(item);
+						        });
+						        responseFn( a );
+						    },
+				            open: function(){
+						        $(this).autocomplete('widget').css('z-index', 1000000);
+						        return false;
+						    }
+				        });
+				        
 					  var consumer;
 					  if (pair.consumer in window.Serviz.Graffle.elements) {
 					  	consumer = window.Serviz.Graffle.elements[pair.consumer];
@@ -271,6 +338,8 @@
 				  });
 			});
 		
+			setTimeout(window.Serviz.reposition, 2000);
+			
 			$("#holder").qtip("destroy");
 		}
 	
@@ -302,11 +371,22 @@
 			window.Serviz.Graffle.paper = Raphael("holder", 1024, 768);
 			
 			tl.dispose();
-			loadTimeline();
+			//loadTimeline();
 			
 			$('#datestart').val("");
 			$('#dateend').val("");
 		}
+		
+		window.Serviz.callbacks.serviceChanged = function() {
+			var id = $(this).attr('data-id');
+			$("#version"+id+ " option:gt(0)").remove();
+			
+			$.each(window.Serviz.availableServices[$(this).val()].versions,function(key,value) {
+				$("#version"+id).append($("<option></option>").attr("value", key).text(key));
+			});
+				
+			//$("version"+$(this).attr('data-id')).remove();
+		};
 		
 		$("#btnReset").click(window.Serviz.callbacks.fullReset);
 		$("#btnLatestConfig").click(window.Serviz.callbacks.loadLatestStatic);
@@ -399,11 +479,15 @@
 			if (window.Serviz.status.lastVersion == 10) return;
 			
 			window.Serviz.status.lastVersion++;
-			$("#addVersion").before('<div id="divVersion'+window.Serviz.status.lastVersion+'" class="versionPair" style="display:none;"> <select id="service'+window.Serviz.status.lastVersion+'"><option>Service</option></select> <select id="version'+window.Serviz.status.lastVersion+'"><option>Version (*)</option></select></div>');
+			$("#addVersion").before('<div id="divVersion'+window.Serviz.status.lastVersion+'" class="versionPair" style="display:none;"> <select id="service'+window.Serviz.status.lastVersion+'" data-id="'+window.Serviz.status.lastVersion+'"><option>Service</option></select> <select id="version'+window.Serviz.status.lastVersion+'" data-id="'+window.Serviz.status.lastVersion+'"><option>Version (*)</option></select></div>');
 			
-			$("#divVersion"+window.Serviz.status.lastVersion).slideDown();
+			$.each(window.Serviz.availableServices,function(key,value) {
+				$("#service"+window.Serviz.status.lastVersion).append($("<option></option>").attr("value", key).text(key));	
+			});
+				
+			$("#service"+window.Serviz.status.lastVersion).change(window.Serviz.callbacks.serviceChanged);
 			
-			$("#menu").qtip("reposition");
+			$("#divVersion"+window.Serviz.status.lastVersion).slideDown( function() {$("#menu").qtip("reposition");});
 		};
 		window.Serviz.callbacks.removeVersion = function() {
 			if (window.Serviz.status.lastVersion == 1) return;
@@ -420,10 +504,24 @@
 			if (window.Serviz.status.lastUser == 10) return;
 			
 			window.Serviz.status.lastUser++;
-			$("#addUser").before('<div id="divUser'+window.Serviz.status.lastUser+'" style="display:none;">User #'+window.Serviz.status.lastUser+' <input name="user'+window.Serviz.status.lastUser+'" /><button type="submit"><img src="img/icon-magnifying-glass.png" alt="Search" /></button><br /></div>');
+			$("#addUser").before('<div id="divUser'+window.Serviz.status.lastUser+'" style="display:none;">User #'+window.Serviz.status.lastUser+' <input id="user'+window.Serviz.status.lastUser+'" /><button type="submit"><img src="img/icon-magnifying-glass.png" alt="Search" /></button><br /></div>');
 			
-			$("#divUser"+window.Serviz.status.lastUser).slideDown();
-			$("#menu").qtip("reposition");
+			$("#divUser"+window.Serviz.status.lastUser).slideDown(function() {$("#menu").qtip("reposition");});
+			
+			$( "#user"+window.Serviz.status.lastUser ).autocomplete({
+	            source: function(req, responseFn) {
+			        var re = $.ui.autocomplete.escapeRegex(req.term);
+    				var matcher = new RegExp( re, "i" );
+			        var a = $.grep( window.Serviz.availableUsernames, function(item,index){
+			            return matcher.test(item);
+			        });
+			        responseFn( a );
+			    },
+	            open: function(){
+			        $(this).autocomplete('widget').css('z-index', 1000000);
+			        return false;
+			    }
+	        });
 		};
 		window.Serviz.callbacks.removeUser = function() {
 			if (window.Serviz.status.lastUser == 1) return;
@@ -436,6 +534,8 @@
 			});
 		}
 		
+		$("#service1").change(window.Serviz.callbacks.serviceChanged);
+		
 		$("#addVersionBtn").click(window.Serviz.callbacks.addVersion);
 		$("#delVersionBtn").click(window.Serviz.callbacks.removeVersion);
 		
@@ -444,22 +544,3 @@
 	}
 
 })();
-
-
-// { 
-  // "wiki-url":"http://simile.mit.edu/shelf/", 
-  // "wiki-section":"Simile JFK Timeline", 
-  // "dateTimeFormat": "Gregorian",
-  // "events": [
-    // {
-       // "start":"Sat May 20 2012 00:00:00 GMT-0600",
-       // "title":"'Bay of Pigs' Invasion",
-       // "durationEvent":false
-     // }, {
-       // "start":"Wed May 01 2012 00:00:00 GMT-0600" ,
-       // "end":"Sat Jun 01 2012 00:00:00 GMT-0600" ,
-       // "durationEvent":true,
-       // "title":"Oswald moves to New Orleans",
-       // "description":"Oswald moves to New Orleans, and finds employment at the William B. Riley Coffee Company. ref. Treachery in Dallas, p 320"
-     // } ] 
-// }
