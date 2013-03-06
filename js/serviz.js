@@ -96,6 +96,7 @@
 				// }
 				// reloadTimeline(dateStart, dateEnd);
 				window.Serviz.Graffle.reloadGraph(dateStart, dateEnd);
+				 window.Serviz.loadHistogram(dateStart, dateEnd);
 			}
 	    window.Serviz.initializeDateTimePickers = function() {
 			// Configure the datepickers
@@ -161,7 +162,25 @@
 					}
 				});
 				
-				loadStaticConfig(latestElement[0][latestElement[0].length-1]);
+				// loadStaticConfig(latestElement[0][latestElement[0].length-1]);
+				jQuery.each(latestElement, function(i, val) {
+		    		var consumer = null;
+					if (val.name in window.Serviz.Graffle.elements) {
+						consumer = window.Serviz.Graffle.elements[val.name];
+					} else {
+						consumer = window.Serviz.Graffle.paper.boxWithText(0, 0, 60, 40, val.name);
+						consumer.drag(onmove, onstart, onend);
+			  			consumer.attr({fill: Raphael.getRGB("#0987ED"), "fill-opacity": 100, "stroke-width": 2, cursor: "move"});
+			  			
+			  			window.Serviz.Graffle.elements[val.name] = consumer;
+			  			
+			  			window.Serviz.Graffle.staticElements[val.name] = consumer;
+					}
+					
+					jQuery.each(val.operations, function(k, operation) {
+						consumer.addMethod(operation, true);
+					});
+				});
 			});  
 			
 			
@@ -206,7 +225,7 @@
 				$('#version'+i+' option:gt(0)').remove();
 				
 				$.each(window.Serviz.availableServices,function(key,value) {
-					$("#service"+i).append($("<option></option>").attr("value", key).text(key));	
+					$("#service"+i).append($("<option></option>").attr("value", key.slice(0,-6)).text(key));	
 				});
 				
 				$('#service'+i).val(serviceOption);
@@ -226,6 +245,13 @@
 			// $.each(window.Serviz.availableServices[serviceDropdown.val()].versions, function(key,value) {
 				// versionDropdown.append($("<option></option>").attr("value", key).text(key));	
 			// });
+		}
+		
+		window.Serviz.Graffle.preprocessData = function(data) {
+				data.data.forEach(function(element, index, array) {
+					element.consumer += "v"+element.consumer_version;
+					element.service += "v"+element.service_version;
+				});
 		}
 		
 		window.Serviz.Graffle.reloadGraph = function (dateStart, dateEnd) {
@@ -274,6 +300,8 @@
 			}
 			
 			$.getJSON(url, function(doc) {
+				  window.Serviz.Graffle.preprocessData(doc);
+				  
 				  window.Serviz.Graffle.elements = new Object();
 				  window.Serviz.Graffle.staticElements = new Object();
 				  
